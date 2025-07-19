@@ -79,44 +79,40 @@
   </div>
 
   <script>
-   <script>
   const url = "https://script.google.com/macros/s/AKfycbw5QQy8N9r3dEBUE93KIG5zUydHJGvulfYsZgTZH1QRcsgwECBYF-N3Ohb-uZHeOzQDkQ/exec";
+
+  let aprobados = [];
+  let index = 0;
+
+  function mostrarSiguiente() {
+    if (aprobados.length === 0) return;
+
+    const perro = aprobados[index];
+
+    const nombreEl = document.getElementById("nombrePerro");
+    const imagenEl = document.getElementById("fotoPerro");
+
+    nombreEl.classList.remove("mostrar");
+    imagenEl.classList.remove("mostrar");
+
+    setTimeout(() => {
+      nombreEl.textContent = perro.nombre.toUpperCase();
+      imagenEl.src = perro.imagen;
+
+      nombreEl.classList.add("mostrar");
+      imagenEl.classList.add("mostrar");
+    }, 300);
+
+    index = (index + 1) % aprobados.length;
+  }
 
   fetch(url)
     .then(res => res.json())
-    .then(aprobados => {
-      const nombreEl = document.getElementById("nombrePerro");
-      const imagenEl = document.getElementById("fotoPerro");
-
-      if (aprobados.length > 0) {
-        let index = 0;
-
-        const mostrarPerro = () => {
-          const perro = aprobados[index];
-          
-          // Ocultar antes de cambiar
-          nombreEl.classList.remove("mostrar");
-          imagenEl.classList.remove("mostrar");
-
-          // Esperar a que se oculten (opcional)
-          setTimeout(() => {
-            nombreEl.textContent = perro.nombre.toUpperCase();
-            imagenEl.src = perro.imagen;
-
-            // Mostrar con transición
-            nombreEl.classList.add("mostrar");
-            imagenEl.classList.add("mostrar");
-          }, 300);
-
-          // Siguiente
-          index = (index + 1) % aprobados.length;
-        };
-
-        mostrarPerro(); // Mostrar el primero
-        setInterval(mostrarPerro, 5000); // Cambiar cada 5 segundos
-      } else {
-        nombreEl.textContent = "--";
-      }
+    .then(data => {
+      aprobados = data;
+      index = Math.floor(Math.random() * aprobados.length);
+      mostrarSiguiente();
+      setInterval(mostrarSiguiente, 10000); // 👈 igual que en Santafé: 10 segundos
     });
 </script>
 </body>
