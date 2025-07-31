@@ -2,69 +2,78 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Día del Perro - iCo Medios</title>
+  <title>Día del Gato - iCo Medios</title>
   <meta http-equiv="refresh" content="180">
   <link rel="stylesheet" href="https://use.typekit.net/svb3fuh.css">
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff;
-      overflow: hidden;
-    }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    overflow: hidden;
+  }
 
-    .contenedor {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-    }
+  .contenedor {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
 
-    video#fondoVideo {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
-      z-index: 0;
-    }
+  video#fondoVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    z-index: 0;
+  }
 
-     .foto {
+.foto {
+  display: none;
+  width: 30vw; /* o el ancho que desees */
+  height: calc(30vw * 4 / 3); /* 3:4 aspect ratio manual */
+  overflow: hidden;
+  border-radius: 5px;
+  background-color: #fff;
+  z-index: 1;
   position: absolute;
-  top: 49%;
+  top: 47%;
   left: 50%;
   transform: translateX(-50%);
-  height: 35vh; /* puedes ajustar este valor si la ves muy grande o muy pequeña */
-  border-radius: 1vw;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
-  z-index: 2;
-  display: none;
-    }
+}
 
-    .nombre-perro {
-      position: absolute;
-      top: 41%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      font-weight: 800;
-      color: #ecd4db;
-      font-size: 2.5vw;
-      font-family: "jaf-domus-titling-web", sans-serif;
-      font-style: normal;
-      opacity: 0;
-      transition: opacity 0.3s ease-in;
-      text-align: center;
-    }
+  .foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: top left; /* <- aquí el cambio clave */
+  }
 
-    .nombre-perro.mostrar {
-      opacity: 1;
-    }
+  .nombre-perro {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-weight: 800;
+    color: #ecd4db;
+    font-size: 3.5vw;
+    font-family: "jaf-domus-titling-web", sans-serif;
+    font-style: normal;
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+    text-align: center;
+  }
 
-    .foto.mostrar {
-      display: block;
-    }
-  </style>
+  .nombre-perro.mostrar {
+    opacity: 1;
+  }
+
+  .foto.mostrar {
+    display: block;
+  }
+</style>
 </head>
 <body>
   <div class="contenedor">
@@ -73,46 +82,37 @@
       Tu navegador no soporta video.
     </video>
 
-    <img id="fotoPerro" class="foto" src="" alt="Foto del perrito">
+    <div id="fotoContenedor" class="foto">
+      <img id="fotoPerro" src="" alt="Foto del michi">
+    </div>
     <div id="nombrePerro" class="nombre-perro"></div>
   </div>
 
   <script>
-  const url = "https://script.google.com/macros/s/AKfycbw5QQy8N9r3dEBUE93KIG5zUydHJGvulfYsZgTZH1QRcsgwECBYF-N3Ohb-uZHeOzQDkQ/exec";
+    const url = "https://script.google.com/macros/s/AKfycbw5hl60LhaU0G3_X7haQn5Sps3bkOg8FSmtTy82UBXtdZ9ey2TQZUrVP936Joc3SStS9A/exec";
 
-  let aprobados = [];
-  let index = 0;
+    fetch(url)
+      .then(res => res.json())
+      .then(aprobados => {
+        const nombreEl = document.getElementById("nombrePerro");
+        const imagenEl = document.getElementById("fotoPerro");
+        const contenedorFoto = document.getElementById("fotoContenedor");
 
-  function mostrarSiguiente() {
-    if (aprobados.length === 0) return;
+        if (aprobados.length > 0) {
+          const elegido = aprobados[Math.floor(Math.random() * aprobados.length)];
+          
+          nombreEl.textContent = elegido.nombre.toUpperCase();
+          imagenEl.src = elegido.imagen;
 
-    const perro = aprobados[index];
-
-    const nombreEl = document.getElementById("nombrePerro");
-    const imagenEl = document.getElementById("fotoPerro");
-
-    nombreEl.classList.remove("mostrar");
-    imagenEl.classList.remove("mostrar");
-
-    setTimeout(() => {
-      nombreEl.textContent = perro.nombre.toUpperCase();
-      imagenEl.src = perro.imagen;
-
-      nombreEl.classList.add("mostrar");
-      imagenEl.classList.add("mostrar");
-    }, 300);
-
-    index = (index + 1) % aprobados.length;
-  }
-
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      aprobados = data;
-      index = Math.floor(Math.random() * aprobados.length);
-      mostrarSiguiente();
-      setInterval(mostrarSiguiente, 10000); // 👈 igual que en Santafé: 10 segundos
-    });
-</script>
+          // Mostrar con transición
+          setTimeout(() => {
+            nombreEl.classList.add("mostrar");
+            contenedorFoto.classList.add("mostrar");
+          }, 300);
+        } else {
+          nombreEl.textContent = "--";
+        }
+      });
+  </script>
 </body>
 </html>
