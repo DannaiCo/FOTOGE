@@ -30,25 +30,26 @@
   }
 
 .foto {
-  display: none;
-  width: 30vw; /* o el ancho que desees */
-  height: calc(30vw * 4 / 3); /* 3:4 aspect ratio manual */
+  width: 30vw;
+  max-height: 35vh; /* evita que se salga del área visible */
   overflow: hidden;
-  border-radius: 5px;
-  background-color: #fff;
-  z-index: 1;
+  border-radius: 3px;
+  background-color: white;
   position: absolute;
-  top: 47%;
+  top: 65%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-  .foto img {
-  width: 100%;
+.foto img {
   height: 100%;
-  object-fit: contain;
-  object-position: top left; /* <- aquí el cambio clave */
-  }
+  width: auto;
+  max-width: 100%;
+  object-fit: cover;
+}
 
   .nombre-perro {
     position: absolute;
