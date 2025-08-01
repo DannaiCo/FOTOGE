@@ -89,31 +89,38 @@
     <div id="nombrePerro" class="nombre-perro"></div>
   </div>
 
-  <script>
-    const url = "https://script.google.com/macros/s/AKfycbw5hl60LhaU0G3_X7haQn5Sps3bkOg8FSmtTy82UBXtdZ9ey2TQZUrVP936Joc3SStS9A/exec";
+ <script>
+  const url = "https://script.google.com/macros/s/AKfycbw5hl60LhaU0G3_X7haQn5Sps3bkOg8FSmtTy82UBXtdZ9ey2TQZUrVP936Joc3SStS9A/exec";
 
-    fetch(url)
-      .then(res => res.json())
-      .then(aprobados => {
-        const nombreEl = document.getElementById("nombrePerro");
-        const imagenEl = document.getElementById("fotoPerro");
-        const contenedorFoto = document.getElementById("fotoContenedor");
+  fetch(url)
+    .then(res => res.json())
+    .then(aprobados => {
+      const nombreEl = document.getElementById("nombrePerro");
+      const imagenEl = document.getElementById("fotoPerro");
+      const contenedorFoto = document.getElementById("fotoContenedor");
 
-        if (aprobados.length > 0) {
+      if (aprobados.length > 0) {
+        function mostrarAleatorio() {
           const elegido = aprobados[Math.floor(Math.random() * aprobados.length)];
           
-          nombreEl.textContent = elegido.nombre.toUpperCase();
-          imagenEl.src = elegido.imagen;
+          nombreEl.classList.remove("mostrar");
+          contenedorFoto.classList.remove("mostrar");
 
-          // Mostrar con transición
           setTimeout(() => {
+            nombreEl.textContent = elegido.nombre.toUpperCase();
+            imagenEl.src = elegido.imagen;
+
             nombreEl.classList.add("mostrar");
             contenedorFoto.classList.add("mostrar");
           }, 300);
-        } else {
-          nombreEl.textContent = "--";
         }
-      });
-  </script>
+
+        mostrarAleatorio(); // Mostrar el primero
+        setInterval(mostrarAleatorio, 7000); // Cambiar cada 7 segundos
+      } else {
+        nombreEl.textContent = "--";
+      }
+    });
+</script>
 </body>
 </html>
