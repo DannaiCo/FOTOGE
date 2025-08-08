@@ -31,12 +31,12 @@
 
 .foto {
   width: 30vw;
-  height: 35vh; /* tamaño fijo para centrar bien */
+  max-height: 35vh; /* evita que se salga del área visible */
   overflow: hidden;
   border-radius: 3px;
   background-color: white;
   position: absolute;
-  top: 65%; /* ahora la centramos verticalmente */
+  top: 65%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -48,7 +48,6 @@
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;
-  object-position: center center; /* clave: centra la imagen */
 }
 
   .nombre-perro {
@@ -124,4 +123,5 @@
 </script>
 </body>
 </html>
+
 
